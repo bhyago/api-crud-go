@@ -4,16 +4,20 @@ import (
 	"fmt"
 
 	"github.com/bhyago/api-crud-go/infra/config"
+	"github.com/bhyago/api-crud-go/infra/database"
 	"github.com/gin-gonic/gin"
 )
 
 type Service struct {
-	*gin.Engine
+	Engine   *gin.Engine
+	Database *database.Database
 }
 
-func NewService() *Service {
-	r := gin.Default()
-	return &Service{r}
+func NewService(db *database.Database) *Service {
+	return &Service{
+		Engine:   gin.Default(),
+		Database: db,
+	}
 }
 
 func (s *Service) Start() error {
