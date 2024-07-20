@@ -1,6 +1,11 @@
 package api
 
-import "github.com/gin-gonic/gin"
+import (
+	"fmt"
+
+	"github.com/bhyago/api-crud-go/infra/config"
+	"github.com/gin-gonic/gin"
+)
 
 type Service struct {
 	*gin.Engine
@@ -11,7 +16,7 @@ func NewService() *Service {
 	return &Service{r}
 }
 
-func (s *Service) Start() {
+func (s *Service) Start() error {
 	s.GetRoutes()
-	s.Engine.Run()
+	return s.Engine.Run(fmt.Sprintf(":%d", config.Env.ApiPort))
 }
