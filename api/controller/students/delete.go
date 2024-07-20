@@ -5,11 +5,10 @@ import (
 
 	"github.com/bhyago/api-crud-go/api/controller"
 	"github.com/bhyago/api-crud-go/entities/shared"
-	student_usecases "github.com/bhyago/api-crud-go/usecases/student"
 	"github.com/gin-gonic/gin"
 )
 
-func Delete(c *gin.Context) {
+func (sc *StudentController) Delete(c *gin.Context) {
 	var input Input
 	var err error
 
@@ -21,7 +20,7 @@ func Delete(c *gin.Context) {
 		return
 	}
 
-	if err = student_usecases.Delete(input.UUID); err != nil {
+	if err = sc.StudentUseCase.Delete(input.UUID); err != nil {
 		c.JSON(http.StatusNotFound, controller.NewResponseMessageError(err.Error()))
 		return
 	}

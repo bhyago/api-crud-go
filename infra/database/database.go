@@ -1,13 +1,18 @@
 package database
 
-import "go.mongodb.org/mongo-driver/mongo"
+import (
+	"github.com/bhyago/api-crud-go/entities"
+	"go.mongodb.org/mongo-driver/mongo"
+)
 
 type Database struct {
-	Conn *mongo.Client
+	Conn              *mongo.Client
+	StudentRepository entities.StudentRepository
 }
 
-func NewDatabase(conn *mongo.Client) *Database {
+func NewDatabase(conn *mongo.Client, sr entities.StudentRepository) *Database {
 	return &Database{
-		Conn: conn,
+		Conn:              conn,
+		StudentRepository: sr,
 	}
 }

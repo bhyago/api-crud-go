@@ -2,6 +2,6 @@ package student
 
 import "github.com/bhyago/api-crud-go/entities"
 
-func List() (students []entities.Studant, err error) {
-	return entities.Students, err
+func (su *StudentUseCase) List() (students []entities.Studant, err error) {
+	return su.Database.StudentRepository.FindAll()
 }

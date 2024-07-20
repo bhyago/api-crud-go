@@ -9,12 +9,21 @@ services:
     ports:
       - 8080:8080
     command: tail -f /dev/null
+    depends_on:
+      - aula-mongo
+    networks:
+      - aula-network
 
   aula-mongo:
     container_name: aula-mongo
-    image: mongo:latest
+    image: mongo:5.0.10
     volumes:
       - .database:/data/db
     ports:
       - 27017:27017
-    
+    networks:
+      - aula-network
+
+networks:
+  aula-network:
+    driver: bridge

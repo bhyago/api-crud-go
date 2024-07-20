@@ -6,11 +6,10 @@ import (
 	"github.com/bhyago/api-crud-go/api/controller"
 	"github.com/bhyago/api-crud-go/entities"
 	"github.com/bhyago/api-crud-go/entities/shared"
-	student_usecases "github.com/bhyago/api-crud-go/usecases/student"
 	"github.com/gin-gonic/gin"
 )
 
-func Details(c *gin.Context) {
+func (sc *StudentController) Details(c *gin.Context) {
 	var input Input
 	var studentFound entities.Studant
 	var err error
@@ -23,7 +22,7 @@ func Details(c *gin.Context) {
 		return
 	}
 
-	studentFound, err = student_usecases.SearchById(input.UUID)
+	studentFound, err = sc.StudentUseCase.SearchById(input.UUID)
 	if err != nil {
 		c.JSON(http.StatusNotFound, controller.NewResponseMessageError(err.Error()))
 		return

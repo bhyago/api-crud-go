@@ -5,11 +5,10 @@ import (
 
 	"github.com/bhyago/api-crud-go/api/controller"
 	"github.com/bhyago/api-crud-go/entities/shared"
-	student_usecases "github.com/bhyago/api-crud-go/usecases/student"
 	"github.com/gin-gonic/gin"
 )
 
-func Update(c *gin.Context) {
+func (sc *StudentController) Update(c *gin.Context) {
 	var input Input
 	var err error
 
@@ -26,7 +25,7 @@ func Update(c *gin.Context) {
 		return
 	}
 
-	student, err := student_usecases.Update(input.UUID, input.FullName, input.Age)
+	student, err := sc.StudentUseCase.Update(input.UUID, input.FullName, input.Age)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, controller.NewResponseMessageError(err.Error()))
 		return
