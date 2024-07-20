@@ -4,14 +4,13 @@ import (
 	"net/http"
 
 	"github.com/bhyago/api-crud-go/api/controller"
-	"github.com/bhyago/api-crud-go/entities"
 	"github.com/bhyago/api-crud-go/entities/shared"
+	student_usecases "github.com/bhyago/api-crud-go/usecases/student"
 	"github.com/gin-gonic/gin"
 )
 
 func Delete(c *gin.Context) {
 	var input Input
-	var newStudents []entities.Studant
 	var err error
 
 	input.ID = c.Params.ByName("id")
@@ -22,14 +21,10 @@ func Delete(c *gin.Context) {
 		return
 	}
 
-	for _, studentelement := range entities.Students {
-		if studentelement.ID != input.UUID {
-			newStudents = append(newStudents, studentelement)
-		}
+	if err = student_usecases.Delete(input.UUID); err != nil {
+		c.JSON(http.StatusNotFound, controller.NewResponseMessageError(err.Error()))
+		return
 	}
 
-	entities.Students = newStudents
-
 	c.JSON(http.StatusOK, controller.NewResponseMessage("Student deleted"))
-
 }

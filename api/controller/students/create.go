@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/bhyago/api-crud-go/api/controller"
-	"github.com/bhyago/api-crud-go/entities"
+	student_usecases "github.com/bhyago/api-crud-go/usecases/student"
 	"github.com/gin-gonic/gin"
 )
 
@@ -15,11 +15,11 @@ func Create(c *gin.Context) {
 		return
 	}
 
-	student := entities.Newstudent(
-		input.FullName,
-		input.Age,
-	)
-	entities.Students = append(entities.Students, student)
+	student, err := student_usecases.Create(input.FullName, input.Age)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, controller.NewResponseMessageError(err.Error()))
+		return
+	}
 
 	c.JSON(http.StatusAccepted, student)
 }

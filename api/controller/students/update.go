@@ -4,17 +4,16 @@ import (
 	"net/http"
 
 	"github.com/bhyago/api-crud-go/api/controller"
-	"github.com/bhyago/api-crud-go/entities"
 	"github.com/bhyago/api-crud-go/entities/shared"
+	student_usecases "github.com/bhyago/api-crud-go/usecases/student"
 	"github.com/gin-gonic/gin"
 )
 
 func Update(c *gin.Context) {
 	var input Input
-	var studantFound entities.Studant
-	var newStudents []entities.Studant
+	var err error
 
-	err := c.ShouldBindJSON(&input)
+	err = c.ShouldBindJSON(&input)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, controller.NewResponseMessageError((err.Error())))
 		return
@@ -27,31 +26,12 @@ func Update(c *gin.Context) {
 		return
 	}
 
-	for _, studentElement := range entities.Students {
-		if studentElement.ID == input.UUID {
-			studantFound = studentElement
-		}
-	}
-
-	if studantFound.ID == shared.GetUuidEmpty() {
-		c.JSON(http.StatusNotFound, controller.NewResponseMessageError("Student not found"))
+	student, err := student_usecases.Update(input.UUID, input.FullName, input.Age)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, controller.NewResponseMessageError(err.Error()))
 		return
 	}
 
-	studantFound.FullName = input.FullName
-	studantFound.Age = input.Age
-
-	for _, studentElement := range entities.Students {
-		if studantFound.ID == studentElement.ID {
-			newStudents = append(newStudents, studantFound)
-		} else {
-			newStudents = append(newStudents, studentElement)
-		}
-
-	}
-
-	entities.Students = newStudents
-
-	c.JSON(http.StatusOK, studantFound)
+	c.JSON(http.StatusOK, student)
 
 }
