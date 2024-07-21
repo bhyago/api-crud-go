@@ -26,8 +26,3 @@ type StudentRepository interface {
 	Update(studant *Studant) error
 	Delete(uuid.UUID) error
 }
-
-var Students = []Studant{
-	{ID: shared.GetID(), FullName: "João Eleno", Age: 20},
-	{ID: shared.GetID(), FullName: "Maria Elena", Age: 21},
-}
